@@ -1,0 +1,6 @@
+@QuickMart_Ecommerce_API_HostAddress = http://localhost:5139
+
+GET {{QuickMart_Ecommerce_API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
