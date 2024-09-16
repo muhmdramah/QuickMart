@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using QuickMart_Ecommerce_API.Entities;
+﻿using Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace QuickMart_Ecommerce_API.Data
+namespace Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core.Entities;
+using Infrastructure.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using QuickMart_Ecommerce_API.Data;
-using QuickMart_Ecommerce_API.Entities;
 
 namespace QuickMart_Ecommerce_API.Controllers
 {

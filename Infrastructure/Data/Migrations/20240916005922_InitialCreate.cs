@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace QuickMart_Ecommerce_API.Migrations
+namespace Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

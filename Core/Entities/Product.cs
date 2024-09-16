@@ -1,4 +1,4 @@
-﻿namespace QuickMart_Ecommerce_API.Entities
+﻿namespace Core.Entities
 {
     public class Product
     {
