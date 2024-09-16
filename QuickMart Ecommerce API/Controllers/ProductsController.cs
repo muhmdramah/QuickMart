@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using QuickMart_Ecommerce_API.Data;
+using QuickMart_Ecommerce_API.Entities;
 
 namespace QuickMart_Ecommerce_API.Controllers
 {
@@ -6,16 +9,27 @@ namespace QuickMart_Ecommerce_API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        [HttpGet]
-        public string GetProducts()
+        private readonly ApplicationDbContext _context;
+
+        public ProductsController(ApplicationDbContext context)
         {
-            return "This is will be a list of Products!";
+            _context = context;
+        }
+
+        [HttpGet]
+        public async Task<List<Product>> GetProducts()
+        {
+            var products = await _context.Products.ToListAsync();
+
+            return products;
         }
 
         [HttpGet("{id}")]
-        public string GetProduct(int id)
+        public async Task<Product> GetProduct(int id)
         {
-            return "This is will be a spacified Products!";
+            var product = await _context.Products.FindAsync(id);
+
+            return product;
         }
     }
 
