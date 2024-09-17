@@ -36,4 +36,19 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+using var scope = app.Services.CreateScope();
+var service = scope.ServiceProvider;
+var context = service.GetRequiredService<ApplicationDbContext>();
+
+var logger = service.GetRequiredService<ILogger<Program>>();
+
+try
+{
+    await context.Database.MigrateAsync();
+}
+catch (Exception ex)
+{
+    logger.LogError(ex, "Error occured while migrating proccess!");
+}
+
 app.Run();
