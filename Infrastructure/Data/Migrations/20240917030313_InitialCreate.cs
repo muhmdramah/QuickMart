@@ -42,10 +42,10 @@ namespace Infrastructure.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", unicode: false, maxLength: 128, nullable: false, defaultValue: "Unnamed Product"),
+                    Description = table.Column<string>(type: "nvarchar(MAX)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    PictureUrl = table.Column<string>(type: "nvarchar(2048)", unicode: false, maxLength: 2048, nullable: false),
                     ProductTypeId = table.Column<int>(type: "int", nullable: false),
                     ProductBrandId = table.Column<int>(type: "int", nullable: false)
                 },
