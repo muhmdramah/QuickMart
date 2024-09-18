@@ -19,8 +19,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(optionsAction =>
     optionsAction.UseSqlServer(connectionString);
 });
 
-// Inject IProductRepository
+// Injecting Repositories
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
+builder.Services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
 
 var app = builder.Build();
 
