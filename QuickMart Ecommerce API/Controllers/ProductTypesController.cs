@@ -24,7 +24,7 @@ namespace QuickMart_Ecommerce_API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ProductType> GetProduct(int id)
+        public async Task<ProductType> GetProductType(int id)
         {
             var productType = await _productTypeRepository.GetProductTypeByIdAsync(id);
 
