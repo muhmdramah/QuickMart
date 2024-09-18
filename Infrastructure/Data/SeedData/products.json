@@ -1,0 +1,30 @@
+[
+    {
+      "Id": 1,
+      "Name": "Smartphone",
+      "Description": "Latest smartphone with advanced features",
+      "Price": 699.99,
+      "PictureUrl": "images/smartphone.jpg",
+      "ProductTypeId": 1,
+      "ProductBrandId": 1
+    },
+    {
+      "Id": 2,
+      "Name": "Laptop",
+      "Description": "High-performance laptop for gaming and work",
+      "Price": 1299.99,
+      "PictureUrl": "images/laptop.jpg",
+      "ProductTypeId": 1,
+      "ProductBrandId": 2
+    },
+    {
+      "Id": 3,
+      "Name": "T-Shirt",
+      "Description": "Comfortable cotton t-shirt",
+      "Price": 19.99,
+      "PictureUrl": "images/tshirt.jpg",
+      "ProductTypeId": 2,
+      "ProductBrandId": 3
+    }
+  ]
+  
