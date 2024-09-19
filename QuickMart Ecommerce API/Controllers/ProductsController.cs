@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 
 namespace QuickMart_Ecommerce_API.Controllers
@@ -18,7 +19,10 @@ namespace QuickMart_Ecommerce_API.Controllers
         [HttpGet]
         public async Task<IReadOnlyList<Product>> GetProducts()
         {
-            var products = await _genericRepository.GetAllAsync();
+            //var products = await _genericRepository.GetAllAsync();
+
+            var spc = new ProductWithTypesAndBrandsSpecification();
+            var products = await _genericRepository.GetAllWithSpecificationsAsync(spc);
 
             return products;
         }
@@ -26,7 +30,10 @@ namespace QuickMart_Ecommerce_API.Controllers
         [HttpGet("{id}")]
         public async Task<Product> GetProduct(int id)
         {
-            var product = await _genericRepository.GetByIdAsync(id);
+            //var product = await _genericRepository.GetByIdAsync(id);
+
+            var spc = new ProductWithTypesAndBrandsSpecification(id);
+            var product = await _genericRepository.GetEntityWithSpecificationsAsync(spc);
 
             return product;
         }
