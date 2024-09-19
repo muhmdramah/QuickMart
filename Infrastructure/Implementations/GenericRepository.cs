@@ -1,4 +1,5 @@
 ﻿using Core.Interfaces;
+using Core.Specifications;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,23 @@ namespace Infrastructure.Implementations
                 .FindAsync(id);
 
             return item;
+        }
+
+        public async Task<IReadOnlyList<T>> GetAllWithSpecificationsAsync(ISpecification<T> specification)
+        {
+            var entities = await ApplySpecification(specification).ToListAsync();
+            return entities;
+        }
+
+        public async Task<T> GetEntityWithSpecificationsAsync(ISpecification<T> specification)
+        {
+            var entity = await ApplySpecification(specification).FirstOrDefaultAsync();
+            return entity;
+        }
+
+        private IQueryable<T> ApplySpecification(ISpecification<T> specification)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), specification);
         }
     }
 }
