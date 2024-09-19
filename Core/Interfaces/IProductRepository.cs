@@ -2,9 +2,7 @@
 
 namespace Core.Interfaces
 {
-    public interface IProductRepository
+    public interface IProductRepository : IGenericRepository<Product>
     {
-        Task<IReadOnlyList<Product>> GetProductsAsync();
-        Task<Product> GetProductsByIdAsync(int id);
     }
 }

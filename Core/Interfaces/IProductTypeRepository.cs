@@ -2,9 +2,7 @@ using Core.Entities;
 
 namespace Core.Interfaces
 {
-    public interface IProductTypeRepository
+    public interface IProductTypeRepository : IGenericRepository<ProductType>
     {
-        Task<IReadOnlyList<ProductType>> GetProductTypesAsync();
-        Task<ProductType> GetProductTypeByIdAsync(int id);
     }
 }

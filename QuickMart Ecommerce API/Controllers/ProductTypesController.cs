@@ -8,17 +8,17 @@ namespace QuickMart_Ecommerce_API.Controllers
     [ApiController]
     public class ProductTypesController : ControllerBase
     {
-        private readonly IProductTypeRepository _productTypeRepository;
+        private readonly IGenericRepository<ProductType> _genericRepository;
 
-        public ProductTypesController(IProductTypeRepository productTypeRepository)
+        public ProductTypesController(IGenericRepository<ProductType> genericRepository)
         {
-            _productTypeRepository = productTypeRepository;
+            _genericRepository = genericRepository;
         }
 
         [HttpGet]
         public async Task<IReadOnlyList<ProductType>> GetProductTypes()
         {
-            var productTypes = await _productTypeRepository.GetProductTypesAsync();
+            var productTypes = await _genericRepository.GetAllAsync();
 
             return productTypes;
         }
@@ -26,7 +26,7 @@ namespace QuickMart_Ecommerce_API.Controllers
         [HttpGet("{id}")]
         public async Task<ProductType> GetProductType(int id)
         {
-            var productType = await _productTypeRepository.GetProductTypeByIdAsync(id);
+            var productType = await _genericRepository.GetByIdAsync(id);
 
             return productType;
         }

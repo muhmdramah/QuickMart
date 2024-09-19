@@ -8,17 +8,17 @@ namespace QuickMart_Ecommerce_API.Controllers
     [ApiController]
     public class ProductBrandsController : ControllerBase
     {
-        private readonly IProductBrandRepository _productBrandRepository;
+        private readonly IGenericRepository<ProductBrand> _genericRepository;
 
-        public ProductBrandsController(IProductBrandRepository productBrandRepository)
+        public ProductBrandsController(IGenericRepository<ProductBrand> genericRepository)
         {
-            _productBrandRepository = productBrandRepository;
+            _genericRepository = genericRepository;
         }
 
         [HttpGet]
         public async Task<IReadOnlyList<ProductBrand>> GetProductBrands()
         {
-            var productBrands = await _productBrandRepository.GetProductBrandsAsync();
+            var productBrands = await _genericRepository.GetAllAsync();
 
             return productBrands;
         }
@@ -26,7 +26,7 @@ namespace QuickMart_Ecommerce_API.Controllers
         [HttpGet("{id}")]
         public async Task<ProductBrand> GetProductBrand(int id)
         {
-            var productBrand = await _productBrandRepository.GetProductBrandByIdAsync(id);
+            var productBrand = await _genericRepository.GetByIdAsync(id);
 
             return productBrand;
         }
