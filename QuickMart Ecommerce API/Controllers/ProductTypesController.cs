@@ -1,6 +1,8 @@
-﻿using Core.Entities;
+﻿using AutoMapper;
+using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using QuickMart_Ecommerce_API.DTOs;
 
 namespace QuickMart_Ecommerce_API.Controllers
 {
@@ -9,26 +11,29 @@ namespace QuickMart_Ecommerce_API.Controllers
     public class ProductTypesController : ControllerBase
     {
         private readonly IGenericRepository<ProductType> _genericRepository;
+        private readonly IMapper _mapper;
 
-        public ProductTypesController(IGenericRepository<ProductType> genericRepository)
+        public ProductTypesController(IGenericRepository<ProductType> genericRepository,
+            IMapper mapper)
         {
             _genericRepository = genericRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IReadOnlyList<ProductType>> GetProductTypes()
+        public async Task<IReadOnlyList<ProductTypeDto>> GetProductTypes()
         {
             var productTypes = await _genericRepository.GetAllAsync();
 
-            return productTypes;
+            return _mapper.Map<IReadOnlyList<ProductType>, List<ProductTypeDto>>(productTypes);
         }
 
         [HttpGet("{id}")]
-        public async Task<ProductType> GetProductType(int id)
+        public async Task<ProductTypeDto> GetProductType(int id)
         {
             var productType = await _genericRepository.GetByIdAsync(id);
 
-            return productType;
+            return _mapper.Map<ProductType, ProductTypeDto>(productType);
         }
     }
 }
