@@ -2,6 +2,7 @@
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using QuickMart_Ecommerce_API.DTOs;
 
 namespace QuickMart_Ecommerce_API.Controllers
 {
@@ -33,6 +34,22 @@ namespace QuickMart_Ecommerce_API.Controllers
             var productBrand = await _genericRepository.GetByIdAsync(id);
 
             return productBrand;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProductBrand(int id, [FromForm] UpdateProductBrandDto productBrandDto)
+        {
+            var productBrand = await _genericRepository.GetByIdAsync(id);
+
+            if (productBrand is null)
+                return NotFound($"No product brand was found with id: {id}");
+
+            _mapper.Map(productBrandDto, productBrand);
+
+            await _genericRepository.UpdateAsync(productBrand);
+            await _genericRepository.SaveChangesAsync();
+
+            return Ok("Product brand updated successfully!");
         }
 
         [HttpDelete("{id}")]

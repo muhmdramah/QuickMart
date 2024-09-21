@@ -43,6 +43,22 @@ namespace QuickMart_Ecommerce_API.Controllers
             return _mapper.Map<Product, ProductDto>(product);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(int id, [FromForm] UpdateProductDto updateProductDto)
+        {
+            var product = await _genericRepository.GetByIdAsync(id);
+
+            if (product is null)
+                return NotFound($"No product was found with id: {id}");
+
+            _mapper.Map(updateProductDto, product);
+
+            await _genericRepository.UpdateAsync(product);
+            await _genericRepository.SaveChangesAsync();
+
+            return Ok("Product updated successfully!");
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
