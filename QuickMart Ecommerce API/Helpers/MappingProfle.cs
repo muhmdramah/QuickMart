@@ -12,9 +12,6 @@ namespace QuickMart_Ecommerce_API.Helpers
                 .ForMember(dest => dest.ProductBrand, output => output.MapFrom(src => src.ProductBrand.Name))
                 .ForMember(dest => dest.ProductType, output => output.MapFrom(src => src.ProductType.Name))
                 .ForMember(dest => dest.PictureUrl, output => output.MapFrom<ProductImageUrlResolver>());
-
-            CreateMap<ProductType, ProductTypeDto>();
-            CreateMap<ProductBrand, ProductBrandDto>();
         }
     }
 }

@@ -2,7 +2,6 @@
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using QuickMart_Ecommerce_API.DTOs;
 
 namespace QuickMart_Ecommerce_API.Controllers
 {
@@ -21,19 +20,19 @@ namespace QuickMart_Ecommerce_API.Controllers
         }
 
         [HttpGet]
-        public async Task<IReadOnlyList<ProductBrandDto>> GetProductBrands()
+        public async Task<IReadOnlyList<ProductBrand>> GetProductBrands()
         {
             var productBrands = await _genericRepository.GetAllAsync();
 
-            return _mapper.Map<IReadOnlyList<ProductBrand>, List<ProductBrandDto>>(productBrands);
+            return productBrands;
         }
 
         [HttpGet("{id}")]
-        public async Task<ProductBrandDto> GetProductBrand(int id)
+        public async Task<ProductBrand> GetProductBrand(int id)
         {
             var productBrand = await _genericRepository.GetByIdAsync(id);
 
-            return _mapper.Map<ProductBrand, ProductBrandDto>(productBrand);
+            return productBrand;
         }
 
         [HttpDelete("{id}")]
