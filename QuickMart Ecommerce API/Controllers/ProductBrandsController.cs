@@ -35,5 +35,20 @@ namespace QuickMart_Ecommerce_API.Controllers
 
             return _mapper.Map<ProductBrand, ProductBrandDto>(productBrand);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProductBrand(int id)
+        {
+            var productBrand = await _genericRepository.GetByIdAsync(id);
+
+            if (productBrand is not null)
+            {
+                await _genericRepository.DeleteAsync(productBrand);
+                await _genericRepository.SaveChangesAsync();
+                return Ok($"Product Brand with {id} deleted successfully!");
+            }
+            else
+                return BadRequest("Product Brand is already not found!");
+        }
     }
 }

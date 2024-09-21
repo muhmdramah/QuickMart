@@ -35,5 +35,20 @@ namespace QuickMart_Ecommerce_API.Controllers
 
             return _mapper.Map<ProductType, ProductTypeDto>(productType);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProductType(int id)
+        {
+            var productType = await _genericRepository.GetByIdAsync(id);
+
+            if (productType is not null)
+            {
+                await _genericRepository.DeleteAsync(productType);
+                await _genericRepository.SaveChangesAsync();
+                return Ok($"Product Type with {id} deleted successfully!");
+            }
+            else
+                return BadRequest("Product Type is already not found!");
+        }
     }
 }
