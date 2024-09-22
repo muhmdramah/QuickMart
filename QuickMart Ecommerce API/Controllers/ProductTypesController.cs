@@ -2,7 +2,7 @@
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using QuickMart_Ecommerce_API.DTOs;
+using QuickMart_Ecommerce_API.DTOs.ProductType;
 
 namespace QuickMart_Ecommerce_API.Controllers
 {
@@ -34,6 +34,19 @@ namespace QuickMart_Ecommerce_API.Controllers
             var productType = await _genericRepository.GetByIdAsync(id);
 
             return productType;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProductType([FromForm] AddProductTypeDto addProductTypeDto)
+        {
+            if (addProductTypeDto == null)
+                return BadRequest("Product Type must be not empty!");
+
+            var productType = _mapper.Map<AddProductTypeDto, ProductType>(addProductTypeDto);
+
+            await _genericRepository.AddAsync(productType);
+            await _genericRepository.SaveChangesAsync();
+            return Ok("Product Type added successfully!");
         }
 
         [HttpPut("{id}")]

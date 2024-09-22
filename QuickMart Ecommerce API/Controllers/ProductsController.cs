@@ -3,7 +3,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
-using QuickMart_Ecommerce_API.DTOs;
+using QuickMart_Ecommerce_API.DTOs.Product;
 
 namespace QuickMart_Ecommerce_API.Controllers
 {
@@ -41,6 +41,19 @@ namespace QuickMart_Ecommerce_API.Controllers
             var product = await _genericRepository.GetEntityWithSpecificationsAsync(spc);
 
             return _mapper.Map<Product, ProductDto>(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddProduct([FromForm] AddProductDto addProductDto)
+        {
+            if (addProductDto == null)
+                return BadRequest("Product must be not empty!");
+
+            var product = _mapper.Map<AddProductDto, Product>(addProductDto);
+
+            await _genericRepository.AddAsync(product);
+            await _genericRepository.SaveChangesAsync();
+            return Ok("Product added successfully!");
         }
 
         [HttpPut("{id}")]

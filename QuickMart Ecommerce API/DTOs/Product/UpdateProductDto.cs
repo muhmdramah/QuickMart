@@ -1,4 +1,4 @@
-namespace QuickMart_Ecommerce_API.DTOs
+namespace QuickMart_Ecommerce_API.DTOs.Product
 {
     public class UpdateProductDto
     {

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Core.Entities;
-using QuickMart_Ecommerce_API.DTOs;
+using QuickMart_Ecommerce_API.DTOs.Product;
+using QuickMart_Ecommerce_API.DTOs.ProductBrand;
+using QuickMart_Ecommerce_API.DTOs.ProductType;
 
 namespace QuickMart_Ecommerce_API.Helpers
 {
@@ -16,6 +18,10 @@ namespace QuickMart_Ecommerce_API.Helpers
             CreateMap<UpdateProductDto, Product>();
             CreateMap<UpdateProductBrandDto, ProductBrand>();
             CreateMap<UpdateProductTypeDto, ProductType>();
+
+            CreateMap<AddProductDto, Product>();
+            CreateMap<AddProductTypeDto, ProductType>();
+            CreateMap<AddProductBrandDto, ProductBrand>();
         }
 
 

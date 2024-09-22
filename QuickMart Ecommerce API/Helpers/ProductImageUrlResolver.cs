@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities;
-using QuickMart_Ecommerce_API.DTOs;
+using QuickMart_Ecommerce_API.DTOs.Product;
 
 namespace QuickMart_Ecommerce_API.Helpers
 {
