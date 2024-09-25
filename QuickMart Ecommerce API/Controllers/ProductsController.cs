@@ -22,25 +22,35 @@ namespace QuickMart_Ecommerce_API.Controllers
         }
 
         [HttpGet]
-        public async Task<IReadOnlyList<ProductDto>> GetProducts()
+        public async Task<ActionResult<ProductDto>> GetProducts()
         {
             //var products = await _genericRepository.GetAllAsync();
 
             var spc = new ProductWithTypesAndBrandsSpecification();
             var products = await _genericRepository.GetAllWithSpecificationsAsync(spc);
 
-            return _mapper.Map<IReadOnlyList<Product>, List<ProductDto>>(products);
+            if (products is null)
+                return NotFound($"No Products was found!");
+
+            var productsToReturn = _mapper.Map<IReadOnlyList<Product>, List<ProductDto>>(products);
+
+            return Ok(productsToReturn);
         }
 
         [HttpGet("{id}")]
-        public async Task<ProductDto> GetProduct(int id)
+        public async Task<ActionResult<ProductDto>> GetProduct(int id)
         {
             //var product = await _genericRepository.GetByIdAsync(id);
 
             var spc = new ProductWithTypesAndBrandsSpecification(id);
             var product = await _genericRepository.GetEntityWithSpecificationsAsync(spc);
 
-            return _mapper.Map<Product, ProductDto>(product);
+            if (product is null)
+                return NotFound($"No Product was found with id: {id}!");
+
+            var productToReturn = _mapper.Map<Product, ProductDto>(product);
+
+            return Ok(productToReturn);
         }
 
         [HttpPost]

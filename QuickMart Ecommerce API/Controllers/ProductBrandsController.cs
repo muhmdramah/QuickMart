@@ -21,19 +21,25 @@ namespace QuickMart_Ecommerce_API.Controllers
         }
 
         [HttpGet]
-        public async Task<IReadOnlyList<ProductBrand>> GetProductBrands()
+        public async Task<ActionResult<ProductBrand>> GetProductBrands()
         {
             var productBrands = await _genericRepository.GetAllAsync();
 
-            return productBrands;
+            if (productBrands is null)
+                return NotFound($"No Product Brands was found!");
+
+            return Ok(productBrands);
         }
 
         [HttpGet("{id}")]
-        public async Task<ProductBrand> GetProductBrand(int id)
+        public async Task<ActionResult<ProductBrand>> GetProductBrand(int id)
         {
             var productBrand = await _genericRepository.GetByIdAsync(id);
 
-            return productBrand;
+            if (productBrand is null)
+                return NotFound($"No Product Brand was found with id: {id}!");
+
+            return Ok(productBrand);
         }
 
         [HttpPost]
