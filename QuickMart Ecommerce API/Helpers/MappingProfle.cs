@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Core.Entities;
-using QuickMart_Ecommerce_API.DTOs.Product;
-using QuickMart_Ecommerce_API.DTOs.ProductBrand;
-using QuickMart_Ecommerce_API.DTOs.ProductType;
+using API.DTOs.Product;
+using API.DTOs.ProductBrand;
+using API.DTOs.ProductType;
 
-namespace QuickMart_Ecommerce_API.Helpers
+namespace API.Helpers
 {
     public class MappingProfle : Profile
     {

@@ -1,4 +1,4 @@
-﻿namespace QuickMart_Ecommerce_API.DTOs.ProductBrand
+﻿namespace API.DTOs.ProductBrand
 {
     public class UpdateProductBrandDto
     {

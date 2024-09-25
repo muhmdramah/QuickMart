@@ -1,4 +1,4 @@
-﻿namespace QuickMart_Ecommerce_API.DTOs.Product
+﻿namespace API.DTOs.Product
 {
     public class ProductDto
     {

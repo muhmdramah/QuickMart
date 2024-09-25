@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+﻿using API.DTOs.ProductBrand;
+using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using QuickMart_Ecommerce_API.DTOs.ProductBrand;
 
-namespace QuickMart_Ecommerce_API.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
