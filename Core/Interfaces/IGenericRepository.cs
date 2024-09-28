@@ -13,5 +13,7 @@ namespace Core.Interfaces
         Task SaveChangesAsync();
         Task<IReadOnlyList<T>> GetAllWithSpecificationsAsync(ISpecification<T> specification);
         Task<T> GetEntityWithSpecificationsAsync(ISpecification<T> specification);
+
+        Task<int> CountAsync(ISpecification<T> specification);
     }
 }

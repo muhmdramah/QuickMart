@@ -4,6 +4,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
+using QuickMart_Ecommerce_API.Helpers;
 
 namespace API.Controllers
 {
@@ -22,19 +23,24 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProductDto>> GetProducts(string? sort, int? typeId, int? brandId)
+        public async Task<ActionResult<Pagination<ProductDto>>> GetProducts(
+            [FromQuery] ProductSpecificationParameters parameters)
         {
-            //var products = await _genericRepository.GetAllAsync();
+            var specification = new ProductWithTypesAndBrandsSpecification(parameters);
+            var countSpecification = new ProductWithFiltersForCountSpecification(parameters);
 
-            var spc = new ProductWithTypesAndBrandsSpecification(sort, typeId, brandId);
-            var products = await _genericRepository.GetAllWithSpecificationsAsync(spc);
+            var totalItems = await _genericRepository.CountAsync(countSpecification);
+
+            var products = await _genericRepository.GetAllWithSpecificationsAsync(specification);
 
             if (products is null)
                 return NotFound($"No Products was found!");
 
-            var productsToReturn = _mapper.Map<IReadOnlyList<Product>, List<ProductDto>>(products);
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
 
-            return Ok(productsToReturn);
+            var result = new Pagination<ProductDto>(parameters.PageIndex, parameters.PageSize, totalItems, data);
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
