@@ -10,7 +10,13 @@ namespace Infrastructure.Data
             var query = inputQuery;
 
             if (specification.Criteria != null)
-                query = inputQuery.Where(specification.Criteria);
+                query = query.Where(specification.Criteria);
+
+            if (specification.OrderByAscending is not null)
+                query = query.OrderBy(specification.OrderByAscending);
+
+            if (specification.OrderByDescending is not null)
+                query = query.OrderByDescending(specification.OrderByDescending);
 
             query = specification.Includes
                 .Aggregate(query, (current, include) => current.Include(include));

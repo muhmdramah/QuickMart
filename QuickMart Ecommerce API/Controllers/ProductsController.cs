@@ -22,11 +22,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProductDto>> GetProducts()
+        public async Task<ActionResult<ProductDto>> GetProducts(string sort)
         {
             //var products = await _genericRepository.GetAllAsync();
 
-            var spc = new ProductWithTypesAndBrandsSpecification();
+            var spc = new ProductWithTypesAndBrandsSpecification(sort);
             var products = await _genericRepository.GetAllWithSpecificationsAsync(spc);
 
             if (products is null)
