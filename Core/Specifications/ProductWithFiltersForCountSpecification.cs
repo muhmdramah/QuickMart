@@ -7,7 +7,8 @@ namespace Core.Specifications
         public ProductWithFiltersForCountSpecification(ProductSpecificationParameters parameters)
             : base(x =>
             (!parameters.TypeId.HasValue || x.ProductTypeId == parameters.TypeId) &&
-            (!parameters.BrandId.HasValue || x.ProductBrandId == parameters.BrandId)
+            (!parameters.BrandId.HasValue || x.ProductBrandId == parameters.BrandId) &&
+            (string.IsNullOrEmpty(parameters.Search)) || x.Name.ToLower().Contains(parameters.Search)
             )
         {
         }

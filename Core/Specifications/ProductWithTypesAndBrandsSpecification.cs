@@ -7,7 +7,8 @@ namespace Core.Specifications
         public ProductWithTypesAndBrandsSpecification(ProductSpecificationParameters parameters)
             : base(x =>
             (!parameters.TypeId.HasValue || x.ProductTypeId == parameters.TypeId) &&
-            (!parameters.BrandId.HasValue || x.ProductBrandId == parameters.BrandId)
+            (!parameters.BrandId.HasValue || x.ProductBrandId == parameters.BrandId) &&
+            (string.IsNullOrEmpty(parameters.Search)) || x.Name.ToLower().Contains(parameters.Search)
             )
         {
             AddIncludes(p => p.ProductType);
@@ -15,7 +16,6 @@ namespace Core.Specifications
 
             AddOrderByAscending(p => p.Name);
 
-            //ApplyPagination(parameters.PageSize * (parameters.PageIndex - 1), parameters.PageSize);
             ApplyPagination((parameters.PageIndex - 1) * parameters.PageSize, parameters.PageSize);
 
 
