@@ -28,6 +28,14 @@ builder.Services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
 // Injecting Auttomapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+        policy.AllowAnyHeader()
+              .AllowAnyMethod()
+              .WithOrigins("https://localhost/4200"));
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,6 +52,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseStaticFiles();
+
+app.UseCors("CorsPolicy");
 
 using var scope = app.Services.CreateScope();
 var service = scope.ServiceProvider;
