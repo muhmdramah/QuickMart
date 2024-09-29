@@ -1,7 +1,9 @@
+using Core.Identity;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Implementations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -26,6 +28,16 @@ builder.Services.AddDbContext<ApplicationIdentityDbContext>(optionsAction =>
 {
     optionsAction.UseSqlServer(identityConnectionString);
 });
+
+builder.Services.AddIdentityCore<ApplicationUser>(optionsAction =>
+{
+
+})
+    .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
+    .AddSignInManager<ApplicationUser>();
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 // configure Repositories
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -75,12 +87,18 @@ using var scope = app.Services.CreateScope();
 var service = scope.ServiceProvider;
 var context = service.GetRequiredService<ApplicationDbContext>();
 
+var identityContext = service.GetRequiredService<ApplicationIdentityDbContext>();
+var userManger = service.GetRequiredService<UserManager<ApplicationUser>>();
+
 var logger = service.GetRequiredService<ILogger<Program>>();
 
 try
 {
     await context.Database.MigrateAsync();
     await ApplicationDbContextSeed.SeedAsync(context);
+
+    await identityContext.Database.MigrateAsync();
+    await ApplicationIdentityDbContextSeed.SeedUserAsync(userManger);
 }
 catch (Exception ex)
 {
