@@ -25,6 +25,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
 builder.Services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 // configure Auttomapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
