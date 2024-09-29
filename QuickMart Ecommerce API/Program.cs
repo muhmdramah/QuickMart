@@ -1,5 +1,6 @@
 using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Identity;
 using Infrastructure.Implementations;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -14,10 +15,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var identityConnectionString = builder.Configuration.GetConnectionString("IdentityDefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(optionsAction =>
 {
     optionsAction.UseSqlServer(connectionString);
+});
+
+builder.Services.AddDbContext<ApplicationIdentityDbContext>(optionsAction =>
+{
+    optionsAction.UseSqlServer(identityConnectionString);
 });
 
 // configure Repositories
