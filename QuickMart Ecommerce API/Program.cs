@@ -3,6 +3,7 @@ using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Infrastructure.Implementations;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,24 +36,24 @@ builder.Services.AddDbContext<ApplicationIdentityDbContext>(optionsAction =>
 builder.Services.AddIdentityCore<ApplicationUser>(optionsAction =>
 {
 
-})
-    .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
-    .AddSignInManager<SignInManager<ApplicationUser>>();
+}).AddEntityFrameworkStores<ApplicationIdentityDbContext>()
+  .AddSignInManager<SignInManager<ApplicationUser>>();
 
 
-var jwt = builder.Configuration.GetSection("token");
+var jwt = builder.Configuration.GetSection("Token");
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(optionsAction =>
-{
-    optionsAction.TokenValidationParameters = new TokenValidationParameters()
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["key"])),
-        ValidIssuer = jwt["Issuer"],
-        ValidateIssuer = true,
-        ValidateAudience = false
-    };
-});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(optionsAction =>
+        {
+            optionsAction.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["key"])),
+                ValidIssuer = jwt["Issuer"],
+                ValidateIssuer = true,
+                ValidateAudience = false
+            };
+        });
 
 builder.Services.AddAuthorization();
 
@@ -62,6 +63,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductTypeRepository, ProductTypeRepository>();
 builder.Services.AddScoped<IProductBrandRepository, ProductBrandRepository>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 // configure Auttomapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -1,4 +1,5 @@
 ﻿using Core.Identity;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuickMart_Ecommerce_API.DTOs.IdentityUser;
@@ -11,11 +12,13 @@ namespace QuickMart_Ecommerce_API.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ITokenService _tokenService;
 
-        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
         [HttpPost("login")]
@@ -35,7 +38,7 @@ namespace QuickMart_Ecommerce_API.Controllers
                 return new UserDto()
                 {
                     Email = user.Email,
-                    Token = "token is in progress",
+                    Token = _tokenService.CreateToken(user),
                     Name = user.DisplayName,
                 };
             }
@@ -60,7 +63,7 @@ namespace QuickMart_Ecommerce_API.Controllers
             {
                 Name = registerDto.Name,
                 Email = registerDto.Email,
-                Token = "Token is in progress",
+                Token = _tokenService.CreateToken(user),
             };
         }
     }

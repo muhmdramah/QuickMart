@@ -13,24 +13,23 @@ namespace Infrastructure.Services
         private readonly IConfiguration _configuration;
         private readonly SymmetricSecurityKey _symmetricSecurityKey;
 
-        public TokenService(IConfiguration configuration, SymmetricSecurityKey symmetricSecurityKey)
+        public TokenService(IConfiguration configuration)
         {
             _configuration = configuration;
-            _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:jwt"]));
+            _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:Key"]));
         }
 
         public string CreateToken(ApplicationUser user)
         {
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.DisplayName),
-            };
+        {
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, user.DisplayName),
+        };
 
-            var credentials = new SigningCredentials(_symmetricSecurityKey,
-                SecurityAlgorithms.HmacSha512Signature);
+            var credentials = new SigningCredentials(_symmetricSecurityKey, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor()
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(7),
@@ -39,7 +38,6 @@ namespace Infrastructure.Services
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
