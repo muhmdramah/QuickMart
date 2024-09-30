@@ -24,7 +24,7 @@ namespace Infrastructure.Identity
                         ZipCode = "25122002"
                     }
                 };
-                await userManager.CreateAsync(user, "ComplixPassword");
+                await userManager.CreateAsync(user, "P@ssw0rd");
             }
         }
     }

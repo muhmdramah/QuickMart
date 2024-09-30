@@ -34,7 +34,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(optionsAction =>
 
 })
     .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
-    .AddSignInManager<ApplicationUser>();
+    .AddSignInManager<SignInManager<ApplicationUser>>();
 
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
@@ -106,8 +106,3 @@ catch (Exception ex)
 }
 
 app.Run();
-
-
-// To commit 
-// Added AddProductDto, AddProductTypeDto and AddProductBrandDto
-// Added Create Operation to Product, ProductType and ProductBrand Controllers 
