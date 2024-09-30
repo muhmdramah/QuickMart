@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuickMart_Ecommerce_API.DTOs.IdentityUser;
-using System.Security.Claims;
+using QuickMart_Ecommerce_API.Extentions;
 
 namespace QuickMart_Ecommerce_API.Controllers
 {
@@ -73,9 +73,10 @@ namespace QuickMart_Ecommerce_API.Controllers
         [HttpGet("GetCurrentUser")]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-            var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            //var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            //var user = await _userManager.FindByEmailAsync(email);
 
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindUserByEmailFromClaimsPrincipal(User);
 
             return new UserDto()
             {
@@ -96,9 +97,10 @@ namespace QuickMart_Ecommerce_API.Controllers
         [HttpGet("GetCurrentUserAddress")]
         public async Task<ActionResult<Address>> GetUserAddress()
         {
-            var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            //var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            //var user = await _userManager.FindByEmailAsync(email);
 
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindUserByClaimsPrincipalWithAddress(User);
 
             return user.Address;
         }
