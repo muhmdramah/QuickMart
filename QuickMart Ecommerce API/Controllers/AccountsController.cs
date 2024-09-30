@@ -1,10 +1,8 @@
 ﻿using Core.Identity;
 using Core.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuickMart_Ecommerce_API.DTOs.IdentityUser;
-using System.Security.Claims;
 
 namespace QuickMart_Ecommerce_API.Controllers
 {
@@ -23,7 +21,7 @@ namespace QuickMart_Ecommerce_API.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<ActionResult<UserDto>> LoginAsync(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
@@ -46,7 +44,7 @@ namespace QuickMart_Ecommerce_API.Controllers
             }
         }
 
-        [HttpPost("Register")]
+        [HttpPost("register")]
         public async Task<ActionResult<UserDto>> RegisterAsync(RegisterDto registerDto)
         {
             var user = new ApplicationUser()
@@ -67,40 +65,6 @@ namespace QuickMart_Ecommerce_API.Controllers
                 Email = registerDto.Email,
                 Token = _tokenService.CreateToken(user),
             };
-        }
-
-        [Authorize]
-        [HttpGet("GetCurrentUser")]
-        public async Task<ActionResult<UserDto>> GetCurrentUser()
-        {
-            var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-
-            var user = await _userManager.FindByEmailAsync(email);
-
-            return new UserDto()
-            {
-                Email = user.Email,
-                Token = _tokenService.CreateToken(user),
-                Name = user.DisplayName,
-            };
-        }
-
-        [Authorize]
-        [HttpGet("EmailExists")]
-        public async Task<ActionResult<bool>> EmailExixts([FromQuery] string email)
-        {
-            return await _userManager.FindByEmailAsync(email) is not null;
-        }
-
-        [Authorize]
-        [HttpGet("GetCurrentUserAddress")]
-        public async Task<ActionResult<Address>> GetUserAddress()
-        {
-            var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-
-            var user = await _userManager.FindByEmailAsync(email);
-
-            return user.Address;
         }
     }
 }
