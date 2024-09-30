@@ -1,8 +1,10 @@
-﻿using Core.Identity;
+﻿using AutoMapper;
+using Core.Identity;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using QuickMart_Ecommerce_API.DTOs;
 using QuickMart_Ecommerce_API.DTOs.IdentityUser;
 using QuickMart_Ecommerce_API.Extentions;
 
@@ -15,12 +17,17 @@ namespace QuickMart_Ecommerce_API.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ITokenService tokenService)
+        public AccountsController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            ITokenService tokenService,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         [HttpPost("login")]
@@ -95,14 +102,31 @@ namespace QuickMart_Ecommerce_API.Controllers
 
         [Authorize]
         [HttpGet("GetCurrentUserAddress")]
-        public async Task<ActionResult<Address>> GetUserAddress()
+        public async Task<ActionResult<AddressDto>> GetUserAddress()
         {
             //var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
             //var user = await _userManager.FindByEmailAsync(email);
 
             var user = await _userManager.FindUserByClaimsPrincipalWithAddress(User);
 
-            return user.Address;
+            return _mapper.Map<Address, AddressDto>(user.Address);
+        }
+
+        [Authorize]
+        [HttpPut("UpdateUserAddress")]
+        public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto addressDto)
+        {
+            var user = await _userManager.FindUserByClaimsPrincipalWithAddress(User);
+
+
+            user.Address = _mapper.Map<AddressDto, Address>(addressDto);
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+                return Ok(_mapper.Map<AddressDto>(user.Address));
+            else
+                return BadRequest("Something went wrong!");
         }
     }
 }

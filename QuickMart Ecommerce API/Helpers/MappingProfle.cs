@@ -1,8 +1,10 @@
-﻿using AutoMapper;
-using Core.Entities;
-using API.DTOs.Product;
+﻿using API.DTOs.Product;
 using API.DTOs.ProductBrand;
 using API.DTOs.ProductType;
+using AutoMapper;
+using Core.Entities;
+using Core.Identity;
+using QuickMart_Ecommerce_API.DTOs;
 
 namespace API.Helpers
 {
@@ -22,6 +24,8 @@ namespace API.Helpers
             CreateMap<AddProductDto, Product>();
             CreateMap<AddProductTypeDto, ProductType>();
             CreateMap<AddProductBrandDto, ProductBrand>();
+
+            CreateMap<AddressDto, Address>().ReverseMap();
         }
 
 
