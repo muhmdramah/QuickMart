@@ -24,7 +24,7 @@ namespace QuickMart_Ecommerce_API.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("CreateOrder")]
         public async Task<ActionResult<Order>> CreateOrder(OrderDto orderDto)
         {
             var email = HttpContext.User.RetrieveEmailFromPrincipal();
@@ -38,6 +38,41 @@ namespace QuickMart_Ecommerce_API.Controllers
                 return BadRequest("Error occurred while creating an order!");
 
             return Ok(order);
+        }
+
+
+        [HttpGet("GetAllOrders")]
+        public async Task<ActionResult<IReadOnlyList<Order>>> GetAllOrders()
+        {
+            var email = HttpContext.User.RetrieveEmailFromPrincipal();
+
+            var orders = await _orderService.GetOrdersForUserAsync(email);
+
+            return Ok(orders);
+        }
+
+        [HttpGet("GetOrderById{id}")]
+        public async Task<ActionResult<IReadOnlyList<Order>>> GetOrderById(int id)
+        {
+            var email = HttpContext.User.RetrieveEmailFromPrincipal();
+
+            var order = await _orderService.GetOrdersByIdAsync(id, email);
+
+            if (order is null)
+                return BadRequest();
+
+            return Ok(order);
+        }
+
+        [HttpGet("GetAllDeliveryMethods")]
+        public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetAllDeliveryMethods()
+        {
+            var deliveryMethods = await _orderService.GetDeliveryMethodsAsync();
+
+            if (deliveryMethods is null)
+                return BadRequest();
+
+            return Ok(deliveryMethods);
         }
     }
 }
