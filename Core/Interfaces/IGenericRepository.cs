@@ -1,8 +1,9 @@
-﻿using Core.Specifications;
+﻿using Core.Entities;
+using Core.Specifications;
 
 namespace Core.Interfaces
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<IReadOnlyList<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);

@@ -7,19 +7,12 @@ namespace Infrastructure.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly IGenericRepository<Order> _orderRepository;
-        private readonly IGenericRepository<DeliveryMethod> _deliverMethodRepository;
-        private readonly IGenericRepository<Product> _productRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IBasketRepository _basketRepository;
 
-        public OrderService(IGenericRepository<Order> orderRepository,
-            IGenericRepository<DeliveryMethod> deliverMethodRepository,
-            IGenericRepository<Product> productRepository,
-            IBasketRepository basketRepository)
+        public OrderService(IUnitOfWork unitOfWork, IBasketRepository basketRepository)
         {
-            _orderRepository = orderRepository;
-            _deliverMethodRepository = deliverMethodRepository;
-            _productRepository = productRepository;
+            _unitOfWork = unitOfWork;
             _basketRepository = basketRepository;
         }
 
@@ -32,22 +25,29 @@ namespace Infrastructure.Services
 
             foreach (var item in basket.Items)
             {
-                var productItem = await _productRepository.GetByIdAsync(item.Id);
+                var productItem = await _unitOfWork.Repository<Product>().GetByIdAsync(item.Id);
                 var itemOrderd = new ProductItemOrder(productItem.Id, productItem.Name, productItem.PictureUrl);
                 var orderItem = new OrderItem(itemOrderd, productItem.Price, item.Quantity);
 
                 items.Add(orderItem);
             }
 
-            var deliveryMethod = await _deliverMethodRepository.GetByIdAsync(deliveryMethodId);
+            var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetByIdAsync(deliveryMethodId);
 
             var subTotal = items.Sum(item => item.Price * item.Quantity);
 
             var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subTotal);
 
-            // save to database
+            await _unitOfWork.Repository<Order>().AddAsync(order);
 
-            return order;
+            var result = await _unitOfWork.Complete();
+
+            await _basketRepository.DeleteBasketAsync(basketIt);
+
+            if (result <= 0)
+                return null;
+            else
+                return order;
         }
 
         public Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
