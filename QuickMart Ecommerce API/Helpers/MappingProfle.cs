@@ -5,6 +5,7 @@ using AutoMapper;
 using Core.Entities;
 using Core.Identity;
 using QuickMart_Ecommerce_API.DTOs;
+using QuickMart_Ecommerce_API.DTOs.Basket;
 
 namespace API.Helpers
 {
@@ -26,6 +27,9 @@ namespace API.Helpers
             CreateMap<AddProductBrandDto, ProductBrand>();
 
             CreateMap<AddressDto, Address>().ReverseMap();
+
+            CreateMap<BasketItemDto, BasketItem>().ReverseMap();
+            CreateMap<CustomerBasketDto, CustomerBasket>().ReverseMap();
         }
 
 
