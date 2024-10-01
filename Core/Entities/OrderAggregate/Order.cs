@@ -4,13 +4,13 @@
     {
         public Order() { }
 
-        public Order(DeliveryMethod deliveryMethod, Address shipToAddress, string buyerEmail,
-            IReadOnlyList<OrderItem> orderItems, decimal subTotal)
+        public Order(IReadOnlyList<OrderItem> orderItems, string buyerEmail,
+            Address shippingAddress, DeliveryMethod deliveryMethod, decimal subTotal)
         {
-            DeliveryMethod = deliveryMethod;
-            ShipToAddress = shipToAddress;
-            BuyerEmail = buyerEmail;
             OrderItems = orderItems;
+            BuyerEmail = buyerEmail;
+            ShipToAddress = shippingAddress;
+            DeliveryMethod = deliveryMethod;
             SubTotal = subTotal;
         }
 
