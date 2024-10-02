@@ -5,13 +5,14 @@
         public Order() { }
 
         public Order(IReadOnlyList<OrderItem> orderItems, string buyerEmail,
-            Address shippingAddress, DeliveryMethod deliveryMethod, decimal subTotal)
+            Address shippingAddress, DeliveryMethod deliveryMethod, decimal subTotal, string paymentIntentId)
         {
             OrderItems = orderItems;
             BuyerEmail = buyerEmail;
             ShipToAddress = shippingAddress;
             DeliveryMethod = deliveryMethod;
             SubTotal = subTotal;
+            PaymentIntendId = paymentIntentId;
         }
 
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
