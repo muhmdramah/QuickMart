@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuickMart_Ecommerce_API.DTOs.Basket;
 
@@ -8,6 +9,7 @@ namespace QuickMart_Ecommerce_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BasketsController : ControllerBase
     {
         private readonly IBasketRepository _basketRepository;
