@@ -42,17 +42,17 @@ namespace QuickMart_Ecommerce_API.Controllers
 
 
         [HttpGet("GetAllOrders")]
-        public async Task<ActionResult<IReadOnlyList<Order>>> GetAllOrders()
+        public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetAllOrders()
         {
             var email = HttpContext.User.RetrieveEmailFromPrincipal();
 
             var orders = await _orderService.GetOrdersForUserAsync(email);
 
-            return Ok(orders);
+            return Ok(_mapper.Map<IReadOnlyList<OrderToReturnDto>>(orders));
         }
 
         [HttpGet("GetOrderById{id}")]
-        public async Task<ActionResult<IReadOnlyList<Order>>> GetOrderById(int id)
+        public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrderById(int id)
         {
             var email = HttpContext.User.RetrieveEmailFromPrincipal();
 
@@ -61,7 +61,7 @@ namespace QuickMart_Ecommerce_API.Controllers
             if (order is null)
                 return BadRequest();
 
-            return Ok(order);
+            return Ok(_mapper.Map<OrderToReturnDto>(order));
         }
 
         [HttpGet("GetAllDeliveryMethods")]
